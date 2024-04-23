@@ -9,20 +9,34 @@ import { Serie } from './serie';
 })
 export class SeriesComponent implements OnInit {
 
- 
+
+  totalTemporadas: number = 0;
 
   constructor(private seriesService: SeriesService) { }
   
   series: Array<Serie> = [];
   
-  getCourses() {
+  getSeries() {
     this.seriesService.getSeries().subscribe(series => {
       this.series = series;
+      this.calcularPromedioTemporadas();
     });
   }
 
+  // Método para calcular el promedio de temporadas
+  calcularPromedioTemporadas() {
+
+    let totalTemporadas = 0;
+    for (const serie of this.series) {
+      totalTemporadas += serie.seasons; // Sumamos las temporadas de cada serie
+    }
+    this.totalTemporadas = totalTemporadas / this.series.length; // Calculamos el promedio
+  }
+
+
+
   ngOnInit() {
-    this.getCourses();
+    this.getSeries();
   }
 
 }
